@@ -1,0 +1,6 @@
+StartDate,2019-08-01
+StartTime,00:10:00
+EndDate,3000-12-31
+EndTime,23:55:00
+Interval,1000
+ProcInterval,60000
