@@ -189,7 +189,22 @@
                         {
                             if (lErrorCode == 0)
                             {
-                                c_colib.cWriteLogs(c_sProcessor, "Query not affected [" + s_qbuff + "] (" + c_sMethod + ")!!");
+                                lErrorCode = c_localdb.DBExcute("INSERT INTO HanaSystem.dbo.tb_syncdataque_notfound (dq_trandate, dq_trantime, dq_source, dq_destination, dq_dbname, dq_key, dq_dmltype, dq_dbquery, dq_target_range, dq_datetime, dq_trigger, dq_error) " +
+                                                                 "SELECT dq_trandate, dq_trantime, dq_source, dq_destination, dq_dbname, dq_key, dq_dmltype, dq_dbquery, dq_target_range, dq_datetime, dq_trigger, dq_error " +
+                                                                   "FROM tb_syncdataque " +
+                                                                  "WHERE dq_seq = " + rs_dqrecordset.Fields["dq_seq"].Value.ToString() + " " +
+                                                                    "AND dq_destination = '" + localcode + "' " +
+                                                                    "AND dq_target_range = '1' " +
+                                                                    "AND dq_error IS NULL");
+
+                                if (lErrorCode == 0)
+                                {
+                                    rs_dqrecordset.Delete();
+
+                                    Thread.Sleep(100);
+                                }
+                                else
+                                    c_colib.cWriteLogs(c_sProcessor, "Query not affected [" + s_qbuff + "] (" + c_sMethod + ")!!");
                             }
                             else
                             {
