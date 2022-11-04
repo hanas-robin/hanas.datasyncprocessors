@@ -488,7 +488,7 @@ namespace hanas.hpack
             BackgroundWorker worker = sender as BackgroundWorker;
 
             g_sMessage = string.Format("[{0}] DoWork triggered!!", c_sMethod);
-            c_colib.cWriteLogs(g_sProcessor, g_sMessage);
+            //c_colib.cWriteLogs(g_sProcessor, g_sMessage);
 
             // Assign the result of the computation to the Result property of the DoWorkEventArgs object. This is will be available to the RunWorkerCompleted eventhandler.
             e.Result = RunDataSyncProcessors((int)e.Argument, worker, e);
@@ -562,6 +562,11 @@ namespace hanas.hpack
                         s_qbuff = s_dqquery.Replace("''", "'");
                         s_qbuff = s_dqquery.Replace(", , , ", "");
 
+                        // 2022.11.03 Added by Robin
+                        s_qbuff = s_dqquery.Replace(@"\", "");
+
+                        //c_colib.cWriteLogs(g_sProcessor, "DEBUG: " + s_qbuff);
+
                         lErrorCode = c_remotedb.DBExcute(s_qbuff);
 
                         if(lErrorCode < 0)
@@ -576,6 +581,9 @@ namespace hanas.hpack
 
                             sMessage = string.Format("[{0}] Query execute error ({1})\n[{0}] {2}", c_sMethod, s_qbuff, c_remotedb.error_message);
                             c_colib.cWriteLogs(g_sProcessor, sMessage);
+
+                            // 2022.11.03 Added by Robin
+                            rs_dqrecordset.Delete();
                         }
                         else
                         {
@@ -644,7 +652,7 @@ namespace hanas.hpack
             string c_sMethod = System.Reflection.MethodBase.GetCurrentMethod().Name;
 
             g_sMessage = string.Format("[{0}] Backgoundwork started", c_sMethod);
-            c_colib.cWriteLogs(g_sProcessor, g_sMessage);
+            //c_colib.cWriteLogs(g_sProcessor, g_sMessage);
 
             try
             {

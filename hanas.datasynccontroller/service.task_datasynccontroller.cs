@@ -247,14 +247,14 @@ namespace hanas.datasynccontroller
 
                 _InProcessor = null;            // new Process();
                 _InProcessor = Process.Start(psiInProcessor);
-                c_colib.cWriteLogs(c_sProcessor, "_InProcessor started : " + c_inprocessor_args + " (" + c_sMethod + ")!!");
+                //c_colib.cWriteLogs(c_sProcessor, "_InProcessor started : " + c_inprocessor_args + " (" + c_sMethod + ")!!");
 
                 ProcessStartInfo psiOutProcessor = new ProcessStartInfo("hanas.datasyncout.exe", c_outprocessor_args);
                 psiOutProcessor.UseShellExecute = false;
 
                 _OutProcessor = null;           // new Process();
                 _OutProcessor = Process.Start(psiOutProcessor);
-                c_colib.cWriteLogs(c_sProcessor, "_OutProcessor started : " + c_outprocessor_args + " (" + c_sMethod + ")!!");
+                //c_colib.cWriteLogs(c_sProcessor, "_OutProcessor started : " + c_outprocessor_args + " (" + c_sMethod + ")!!");
 
                 while (true)                     // Main Process will be finished at a certain time from scheduler
                 {
