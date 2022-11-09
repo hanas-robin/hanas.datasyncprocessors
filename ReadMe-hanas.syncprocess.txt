@@ -11,4 +11,7 @@
 3. v1.0.0 2022.11.08 modified by Robin
 - changed timer enable routine
 - changed sending email smtp server port
-- comment some writing logs and added sending email instead
+- commented some writing logs and added sending email instead
+
+4. v1.0.0 2022.11.09 modified by Robin
+- commented delete error data in hanas.hpack module

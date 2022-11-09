@@ -583,7 +583,8 @@ namespace hanas.hpack
                             c_colib.cWriteLogs(g_sProcessor, sMessage);
 
                             // 2022.11.03 Added by Robin
-                            rs_dqrecordset.Delete();
+                            // 2022.11.09 Commented by Robin
+                            // rs_dqrecordset.Delete();
                         }
                         else
                         {
