@@ -78,10 +78,11 @@ namespace hanas.datasynccontroller
 
             SetSystemDBConnectionInfo();
             SetDefaultTimerInfo();
-            GetTimerInfo();
 
             PreProcessingJobs();
-            StartTimerOn();
+
+            GetTimerInfo();
+            //StartTimerOn();
         }
 
         protected override void OnStop()
@@ -108,11 +109,19 @@ namespace hanas.datasynccontroller
                     //ThreadPool.QueueUserWorkItem(ChkRemoteHostConnection);
 
                     //Thread.Sleep(5000);
+
+                    c_emaillib.EmailSubject = "[" + c_covar.host_localname + "] Batch Controller Started";
+                    c_emaillib.EmailBody = c_sMethod + " Local Host was VERIFIED.";
+                    c_emaillib.SendEmail();
                 }
                 else
                 {
                     c_colib.cWriteLogs(c_sProcessor, "Local Server is NOT VERIFIED (" + c_sMethod + ")!!");
                     //Thread.Sleep(1000);
+
+                    c_emaillib.EmailSubject = "[" + c_covar.host_localname + "] Batch Controller NOT Started";
+                    c_emaillib.EmailBody = c_sMethod + " Local Host was NOT VERIFIED.";
+                    c_emaillib.SendEmail();
 
                     return;
                 }
@@ -122,6 +131,10 @@ namespace hanas.datasynccontroller
             catch (DataException ex)
             {
                 c_colib.cWriteLogs(c_sProcessor, "Database Connection Error: {" + ex.Message + "}, Please contact the system administrator (" + c_sMethod + ")!!");
+
+                c_emaillib.EmailSubject = "[" + c_covar.host_localname + "] Batch Controller Stopped";
+                c_emaillib.EmailBody = "Database Connection Error: {" + ex.Message + "} (" + c_sMethod + ").";
+                c_emaillib.SendEmail();
             }
             finally
             {
@@ -242,6 +255,9 @@ namespace hanas.datasynccontroller
             }
             else
             {
+                _tmrLapse.Stop();
+                _tmrLapse.Close();
+
                 ProcessStartInfo psiInProcessor = new ProcessStartInfo("hanas.datasyncin.exe", c_inprocessor_args);
                 psiInProcessor.UseShellExecute = false;
 
@@ -419,7 +435,7 @@ namespace hanas.datasynccontroller
                          "AND bi_cd = '" + c_covar.host_localcode + "' " +
                          "AND bi_active = '1'";
 
-            c_colib.cWriteLogs(c_sProcessor, "sQBuff: " + sQBuff + " (" + c_sMethod + ")!!");
+            //c_colib.cWriteLogs(c_sProcessor, "sQBuff: " + sQBuff + " (" + c_sMethod + ")!!");
 
             if (c_localdb.RsOpen(sQBuff) > 0 && c_localdb.rs.RecordCount > 0)
             {
@@ -438,7 +454,7 @@ namespace hanas.datasynccontroller
                         c_inprocessor_args = @"-t" + c_covar.host_type + " -l" + c_covar.host_localname + " -c" + c_covar.host_localcode;
 
                         string sMessage = string.Format("Local Hostname is Verified: {0}, Local Name: {1} / {6}, Local Code: {2}, Remote Name: {3}, Remote Code: {4} [{5}]", c_covar.host_type, c_covar.host_localname, c_covar.host_localcode, c_covar.host_remotename, c_covar.host_remotecode, c_sMethod, Convert.ToString(c_localdb.rs.Fields["bi_hostname"].Value));
-                        c_colib.cWriteLogs(c_sProcessor, sMessage);
+                        //c_colib.cWriteLogs(c_sProcessor, sMessage);
 
                         //c_colib.cWriteLogs(c_sProcessor, "Local Hostname is Verified (" + c_sMethod + ")!!");
 
@@ -477,7 +493,7 @@ namespace hanas.datasynccontroller
                         //c_colib.cWriteLogs(c_sProcessor, "Local Hostname is Not Verified (" + c_sMethod + ")!!");
 
                         string sMessage = string.Format("Local Hostname is Verified: {0}, Local Name: {1} / {6}, Local Code: {2}, Remote Name: {3}, Remote Code: {4} [{5}]", c_covar.host_type, c_covar.host_localname, c_covar.host_localcode, c_covar.host_remotename, c_covar.host_remotecode, c_sMethod, Convert.ToString(c_localdb.rs.Fields["bi_hostname"].Value));
-                        c_colib.cWriteLogs(c_sProcessor, sMessage);
+                        //c_colib.cWriteLogs(c_sProcessor, sMessage);
                     }
                 }
             }
@@ -622,6 +638,8 @@ namespace hanas.datasynccontroller
 
             c_sMessage = "Configuration file read completed (" + c_sMethod + ")";
             c_colib.cWriteLogs(c_sProcessor, c_sMessage);
+
+            StartTimerOn();
         }
 
         private void StopProcess()

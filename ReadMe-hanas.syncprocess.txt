@@ -7,3 +7,7 @@
 
 2. v1.0.0 2022.11.04 modified by Robin
 - changed sending email smtp server info to gmail
+
+3. v1.0.0 2022.11.08 modified by Robin
+- changed sending email smtp server port
+- comment some writing logs and added sending email instead

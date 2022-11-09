@@ -62,18 +62,25 @@ namespace hanas.com.emaillibs
         }
         
         public void SettingServerVariables()
-        {
+        {            
             //_EmailServerInfo.ems_server = "mail.hanasolution.com";
             //_EmailServerInfo.ems_port = 25;
             //_EmailServerInfo.ems_ssl = false;
             //_EmailServerInfo.ems_account = "support@hanasolution.com";
             //_EmailServerInfo.ems_password = "v4pT_yX(AFd4";
+
+            //_EmailServerInfo.ems_server = "smtp.gmail.com";
+            //_EmailServerInfo.ems_port = 465;
+            //_EmailServerInfo.ems_ssl = true;
+            //_EmailServerInfo.ems_timeout = 60;
+            //_EmailServerInfo.ems_account = "hanas.remote@gmail.com";
+            //_EmailServerInfo.ems_password = "vkfgirxbdrqntobx";
             _EmailServerInfo.ems_server = "smtp.gmail.com";
-            _EmailServerInfo.ems_port = 465;
+            _EmailServerInfo.ems_port = 587;
             _EmailServerInfo.ems_ssl = true;
             _EmailServerInfo.ems_timeout = 60;
             _EmailServerInfo.ems_account = "hanas.remote@gmail.com";
-            _EmailServerInfo.ems_password = "gednwjkqdecvfxrg";
+            _EmailServerInfo.ems_password = "totjfiusticavpwr";
         }
 
         public void SettingDocsVariables()

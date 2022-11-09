@@ -559,8 +559,8 @@ namespace hanas.hpack
                     while (!rs_dqrecordset.EOF)
                     {
                         s_dqquery = string.Format(rs_dqrecordset.Fields["dq_dbquery"].Value.ToString(), rs_dqrecordset.Fields["dq_dbname"].Value);
-                        s_qbuff = s_dqquery.Replace("''", "'");
-                        s_qbuff = s_dqquery.Replace(", , , ", "");
+                        s_qbuff = s_dqquery.Replace(@"''", "'");
+                        s_qbuff = s_dqquery.Replace(@", , , ", "");
 
                         // 2022.11.03 Added by Robin
                         s_qbuff = s_dqquery.Replace(@"\", "");
